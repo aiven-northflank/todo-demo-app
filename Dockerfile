@@ -2,7 +2,7 @@
 FROM maven:3-openjdk-17-slim
 
 # Set the working directory to /app
-WORKDIR /app
+#WORKDIR /app
 
 # Copy the rest of the project files
 COPY . .
