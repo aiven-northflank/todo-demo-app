@@ -1,12 +1,14 @@
 package io.quarkus.sample;
 
+import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheResult;
 import io.quarkus.panache.common.Sort;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import java.util.List;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -22,6 +24,7 @@ public class TodoResource {
     }
 
     @GET
+    @CacheResult(cacheName = "todosCache")
     @Operation(description = "Get all the todos")
     public List<Todo> getAll() {
         return Todo.listAll(Sort.by("order"));
@@ -39,6 +42,7 @@ public class TodoResource {
     }
 
     @POST
+    @CacheInvalidateAll(cacheName = "todosCache")
     @Transactional
     @Operation(description = "Create a new todo")
     public Response create(@Valid Todo item) {
